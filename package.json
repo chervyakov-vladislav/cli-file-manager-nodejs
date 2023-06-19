@@ -1,11 +1,12 @@
 {
   "name": "console-file-manager",
   "version": "1.0.0",
-  "description": "Your task is to implement File Manager using Node.js APIs.",
+  "description": "File Manager using Node.js APIs",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "start:example": "node src/index.js -- --username=vladislav"
+    "start:example": "node ./src/index.js -- --username=vladislav"
   },
   "keywords": [],
   "author": "",
