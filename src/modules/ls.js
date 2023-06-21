@@ -6,11 +6,11 @@ import { messageReporter } from "../messages/messageReporter.js";
 class LS {
   async print(values) {
     if (values.length) {
-      console.log("error");
+      messageReporter.printOperationFailed();
       return;
     }
-    const currentDir = pathController.getPath();
 
+    const currentDir = pathController.getPath();
     const files = await fs.readdir(currentDir, { withFileTypes: true });
 
     const result = files.sort().map((file) => {

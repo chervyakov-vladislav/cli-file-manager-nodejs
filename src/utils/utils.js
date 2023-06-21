@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import { messageReporter } from "../messages/messageReporter.js";
 
 class Utils {
   getUser(args) {
@@ -42,6 +43,15 @@ class Utils {
       );
 
     return result;
+  }
+
+  async isValidDirectory(path) {
+    try {
+      const info = await fs.stat(path);
+      return info.isDirectory();
+    } catch {
+      process.stdout.write("\nno such file or directory\n");
+    }
   }
 }
 

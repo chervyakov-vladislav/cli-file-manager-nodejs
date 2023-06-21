@@ -41,7 +41,7 @@ export default class App {
         messageReporter.printSuggestInput();
         this.user = value;
       } else if (this.user) {
-        consoleEmitter.feed(value, this.rl.prompt);
+        consoleEmitter.feed(value);
       } else {
         this.user = utils.capitalize(value);
         messageReporter.printWelcome(this.user);

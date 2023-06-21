@@ -32,12 +32,10 @@ class MessageReporter {
 
   printOperationFailed() {
     process.stdout.write(`Operation failed\n`);
-    this.printCurrentDir();
   }
 
   printCantLeaveRoot() {
     process.stdout.write(`You cannot leave the root directory\n`);
-    this.printCurrentDir();
   }
 }
 
