@@ -1,6 +1,6 @@
 import { homedir } from "os";
 
-class CurrentPath {
+class PathController {
   constructor() {
     this.root = homedir();
     this.path = homedir();
@@ -12,6 +12,7 @@ class CurrentPath {
 
   setPath(newPath) {
     if (newPath.length < this.root.length) {
+      console.log("You cannot leave the root directory");
       this.path = this.root;
     } else {
       this.path = newPath;
@@ -19,5 +20,5 @@ class CurrentPath {
   }
 }
 
-const currentPath = new CurrentPath();
-export { currentPath };
+const pathController = new PathController();
+export { pathController };
