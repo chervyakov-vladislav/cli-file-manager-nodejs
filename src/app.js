@@ -17,17 +17,19 @@ export default class App {
     this.rl = createInterface({
       input: this.stdin,
       output: this.stdout,
+      prompt: "> ",
     });
 
     this.user = utils.getUser(this.args);
 
     if (!this.user) {
-      messageReporter.suggestInput();
+      messageReporter.printSuggestInput();
     } else {
-      messageReporter.welcome(this.user);
+      messageReporter.printWelcome(this.user);
     }
+    this.rl.prompt(true);
 
-    process.on("exit", () => messageReporter.exit(this.user));
+    process.on("exit", () => messageReporter.printExit(this.user));
 
     this.rl.on("line", (line) => {
       const value = line.trim();
@@ -36,14 +38,15 @@ export default class App {
         process.exit();
       }
       if (!this.user && !value) {
-        messageReporter.suggestInput();
+        messageReporter.printSuggestInput();
         this.user = value;
       } else if (this.user) {
-        consoleEmitter.feed(value);
+        consoleEmitter.feed(value, this.rl.prompt);
       } else {
         this.user = utils.capitalize(value);
-        messageReporter.welcome(this.user);
+        messageReporter.printWelcome(this.user);
       }
+      this.rl.prompt(true);
     });
   }
 }

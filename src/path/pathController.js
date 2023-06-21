@@ -1,4 +1,5 @@
 import { homedir } from "os";
+import { messageReporter } from "../messages/messageReporter.js";
 
 class PathController {
   constructor() {
@@ -7,12 +8,12 @@ class PathController {
   }
 
   getPath() {
-    return this.currentPath;
+    return this.path;
   }
 
   setPath(newPath) {
     if (newPath.length < this.root.length) {
-      console.log("You cannot leave the root directory");
+      messageReporter.printCantLeaveRoot();
       this.path = this.root;
     } else {
       this.path = newPath;

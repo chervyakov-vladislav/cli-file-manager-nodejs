@@ -1,3 +1,5 @@
+import fs from "fs/promises";
+
 class Utils {
   getUser(args) {
     const nameArg = "--username=";
@@ -18,6 +20,28 @@ class Utils {
         return item;
       })
       .join("");
+  }
+
+  parseArgs(values) {
+    const result = values
+      .split(" ")
+      .filter((item) => item !== "")
+      .reduce(
+        (obj, value, index) => {
+          if (!index) {
+            obj.command = value;
+          } else {
+            obj.args.push(value);
+          }
+          return obj;
+        },
+        {
+          command: "",
+          args: [],
+        }
+      );
+
+    return result;
   }
 }
 
