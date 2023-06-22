@@ -1,9 +1,8 @@
 import { EventEmitter } from "events";
 
-import { pathController } from "../path/pathController.js";
 import { messageReporter } from "../messages/messageReporter.js";
 import { utils } from "../utils/utils.js";
-import { ls, cd } from "../modules/index.js";
+import { ls, cd, cat, add } from "../modules/index.js";
 
 class ConsoleEmitter extends EventEmitter {
   constructor() {
@@ -11,8 +10,8 @@ class ConsoleEmitter extends EventEmitter {
     this.on("up", cd.goBack);
     this.on("cd", cd.change);
     this.on("ls", ls.print);
-    this.on("cat", this.#exampleMethod);
-    this.on("add", this.#exampleMethod);
+    this.on("cat", cat.readFile);
+    this.on("add", add.createFile);
     this.on("rn", this.#exampleMethod);
     this.on("cp", this.#exampleMethod);
     this.on("mv", this.#exampleMethod);
