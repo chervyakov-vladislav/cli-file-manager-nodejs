@@ -1,17 +1,19 @@
 import { homedir } from "os";
+import { messageReporter } from "../messages/messageReporter.js";
 
-class CurrentPath {
+class PathController {
   constructor() {
     this.root = homedir();
     this.path = homedir();
   }
 
   getPath() {
-    return this.currentPath;
+    return this.path;
   }
 
   setPath(newPath) {
     if (newPath.length < this.root.length) {
+      messageReporter.printCantLeaveRoot();
       this.path = this.root;
     } else {
       this.path = newPath;
@@ -19,5 +21,5 @@ class CurrentPath {
   }
 }
 
-const currentPath = new CurrentPath();
-export { currentPath };
+const pathController = new PathController();
+export { pathController };

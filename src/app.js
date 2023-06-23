@@ -1,6 +1,8 @@
 import { createInterface } from "readline";
 
 import { utils } from "./utils/utils.js";
+import { consoleEmitter } from "./emitter/emitter.js";
+import { messageReporter } from "./messages/messageReporter.js";
 
 export default class App {
   constructor() {
@@ -15,17 +17,19 @@ export default class App {
     this.rl = createInterface({
       input: this.stdin,
       output: this.stdout,
+      prompt: "> ",
     });
 
     this.user = utils.getUser(this.args);
 
     if (!this.user) {
-      this.suggestInput();
+      messageReporter.printSuggestInput();
     } else {
-      this.welcome();
+      messageReporter.printWelcome(this.user);
     }
+    this.rl.prompt(true);
 
-    process.on("exit", () => this.exit());
+    process.on("exit", () => messageReporter.printExit(this.user));
 
     this.rl.on("line", (line) => {
       const value = line.trim();
@@ -34,29 +38,15 @@ export default class App {
         process.exit();
       }
       if (!this.user && !value) {
-        this.suggestInput();
+        messageReporter.printSuggestInput();
         this.user = value;
       } else if (this.user) {
-        console.log(`app working with value - ${value}`);
+        consoleEmitter.feed(value);
       } else {
         this.user = utils.capitalize(value);
-        this.welcome();
+        messageReporter.printWelcome(this.user);
       }
+      this.rl.prompt(true);
     });
-  }
-
-  exit() {
-    const user = this.user || "User without name";
-    this.stdout.write(`Thank you for using File Manager, ${user}, goodbye!\n`);
-  }
-
-  suggestInput() {
-    this.stdout.write(
-      `You forgot to enter a name. You can enter it now or exit the program by typing ".exit"\n`
-    );
-  }
-
-  welcome() {
-    this.stdout.write(`Welcome to the File Manager, ${this.user}!\n`);
   }
 }
