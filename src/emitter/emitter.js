@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 
 import { messageReporter } from "../messages/messageReporter.js";
 import { utils } from "../utils/utils.js";
-import { ls, cd, cat, add } from "../modules/index.js";
+import { ls, cd, cat, add, rn, cp, mv, rm } from "../modules/index.js";
 
 class ConsoleEmitter extends EventEmitter {
   constructor() {
@@ -12,10 +12,10 @@ class ConsoleEmitter extends EventEmitter {
     this.on("ls", ls.print);
     this.on("cat", cat.readFile);
     this.on("add", add.createFile);
-    this.on("rn", this.#exampleMethod);
-    this.on("cp", this.#exampleMethod);
-    this.on("mv", this.#exampleMethod);
-    this.on("rm", this.#exampleMethod);
+    this.on("rn", rn.rename);
+    this.on("cp", cp.copy);
+    this.on("mv", mv.move);
+    this.on("rm", rm.remove);
     this.on("os", this.#exampleMethod);
     this.on("hash", this.#exampleMethod);
     this.on("compress", this.#exampleMethod);
