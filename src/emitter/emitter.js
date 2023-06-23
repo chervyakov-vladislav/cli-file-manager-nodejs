@@ -2,7 +2,19 @@ import { EventEmitter } from "events";
 
 import { messageReporter } from "../messages/messageReporter.js";
 import { utils } from "../utils/utils.js";
-import { ls, cd, cat, add, rn, cp, mv, rm } from "../modules/index.js";
+import {
+  ls,
+  cd,
+  cat,
+  add,
+  rn,
+  cp,
+  mv,
+  rm,
+  osEmitter,
+  hash,
+  zip,
+} from "../modules/index.js";
 
 class ConsoleEmitter extends EventEmitter {
   constructor() {
@@ -16,28 +28,24 @@ class ConsoleEmitter extends EventEmitter {
     this.on("cp", cp.copy);
     this.on("mv", mv.move);
     this.on("rm", rm.remove);
-    this.on("os", this.#exampleMethod);
-    this.on("hash", this.#exampleMethod);
-    this.on("compress", this.#exampleMethod);
-    this.on("decompress", this.#exampleMethod);
-  }
-
-  #exampleMethod() {
-    console.log(`where is my method for this command`);
+    this.on("os", osEmitter.init.bind(osEmitter));
+    this.on("hash", hash.hash);
+    this.on("compress", zip.compress.bind(zip));
+    this.on("decompress", zip.decompress.bind(zip));
   }
 
   feed(value) {
-    const parsedString = utils.parseArgs(value);
+    const parsedArgs = utils.parseArgs(value);
     const events = this.eventNames();
-    const isValidCommand = events.includes(parsedString.command);
+    const isValidCommand = events.includes(parsedArgs.command);
 
     if (
       isValidCommand &&
-      (parsedString.args.length ||
-        parsedString.command === "ls" ||
-        parsedString.command === "up")
+      (parsedArgs.args.length ||
+        parsedArgs.command === "ls" ||
+        parsedArgs.command === "up")
     ) {
-      this.emit(parsedString.command, parsedString.args);
+      this.emit(parsedArgs.command, parsedArgs.args);
     } else {
       messageReporter.printInvalidInput();
     }
